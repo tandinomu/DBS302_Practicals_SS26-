@@ -22,7 +22,7 @@ By the end of this practical, the following objectives were achieved:
 MongoDB uses a flexible schema-based approach, where data that is accessed simultaneously should be stored together. In the case of an e-commerce platform, two design considerations emerge:
 
 **Embedding vs Referencing:**
-- **Embed** when related data is accessed together and bounded in size — for example, order items inside an order document.
+- **Embed** when related data is accessed together and bounded in size, for example, order items inside an order document.
 - **Reference** when relationships are many-to-many or data grows without a clear bound — for example, a product referenced from many orders.
 
 In this practical, order items are embedded inside orders for read efficiency. Products and users are referenced by their `ObjectId` to allow joins via `$lookup` when needed.
@@ -45,9 +45,9 @@ The aggregation pipeline processes documents through a sequence of stages, where
 
 Indexes allow MongoDB to avoid full collection scans (COLLSCAN) by using an index scan (IXSCAN) instead. Key index types used:
 
-- **Compound index** — covers multiple fields; ordered using the ESR rule (Equality → Sort → Range).
-- **Text index** — enables full-text search across string fields with configurable weights.
-- **`explain("executionStats")`** — reveals whether a query performs a COLLSCAN (slow) or IXSCAN (fast) and shows key metrics like `totalDocsExamined` and `totalKeysExamined`.
+- **Compound index** - covers multiple fields; ordered using the ESR rule (Equality → Sort → Range).
+- **Text index** - enables full-text search across string fields with configurable weights.
+- **`explain("executionStats")`** - reveals whether a query performs a COLLSCAN (slow) or IXSCAN (fast) and shows key metrics like `totalDocsExamined` and `totalKeysExamined`.
 
 
 ## Schema Design
@@ -241,29 +241,13 @@ All indexes were confirmed using `getIndexes()` on both collections.
 
 ## Key Learnings
 
-**1. Query-first schema design matters.**
-Focusing the schema design on how data will be queried and accessed makes things simple. Storing order items within the order document made things faster because no join operation was needed for a common query.
-
-
-**2. Embedding and referencing serve different purposes.**
-Embedding documents works well for small amounts of data that must stay together, like order details. Referenced documents are more appropriate for shared documents like products and users.
-
-**3. The Attribute Pattern handles variable data elegantly.**
-Using an `attributes` object inside a product specification allows you to introduce new types of products with additional fields without changing the schema at all.
-
-
-**4. Aggregation pipelines are powerful for analytics.**
-Using a series of $match, $unwind, $group, $lookup, and $sort operations let us run sophisticated analytics like income per product and expenses by customer without having to develop another system for reporting.
-
-**5. Index ordering significantly affects performance.**
-ESR ordering of a compound index (Equality → Sort → Range) is not merely a recommendation; it allows or does not allow MongoDB to perform filter and sort on one index scan operation. If an index order is wrong, it will be used, but it will work less efficiently.
-
-
-**6. `explain()` is essential for verification.**
-It is impossible to prove whether an index works without the execution of `explain("executionStats")`. Switching from `COLLSCAN` to `IXSCAN` clearly shows that the compound index is properly formed and recognized by the query optimizer.
-
-**7. Text indexes support relevance-ranked search.**
-The weighted text index returned results ranked by relevance score. Higher weights on `name` than `tags` produced intuitive ranking, demonstrating how MongoDB can power basic product search natively without an external search engine.
+1. Query-first design simplifies schema and improves performance (avoids joins) 
+2. Embedding is for tightly related data; referencing is for shared data.
+3. Attribute pattern allows flexible schemas for different product types.
+4. Aggregation pipelines enable powerful analytics within MongoDB.
+5. Correct index order (ESR) greatly improves query efficiency.
+6. explain() verifies index usage (COLLSCAN → IXSCAN).
+7. Text indexes provide relevance-based search results.
 
 ## Conclusion
 
