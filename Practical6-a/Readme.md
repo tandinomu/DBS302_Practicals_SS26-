@@ -60,7 +60,7 @@ user monitoring on >monitorPwd ~* +@read +info +dbsize +lastsave +@connection
 | `set session:user123 "data"` |  OK |
 | `set otherkey "oops"` |  NOPERM — key not allowed |
 
-![app_user RBAC Test](images/pp_userRBACTestPermissionDeniedonNon-SessionKeypng.png)
+![app_user RBAC Test](images/pp_userRBACTestPermissionDeniedonNon-SessionKey.png)
 
 ### monitoring - Read Only
 
