@@ -24,7 +24,7 @@ To secure a Redis instance using ACL-based authentication, role-based access con
 
 ---
 
-## 2. Redis Clean Start
+## 2. Redis Start
 
 ![Redis Clean Start](images/rediscleanstart.png)
 
@@ -50,19 +50,19 @@ user monitoring on >monitorPwd ~* +@read +info +dbsize +lastsave +@connection
 ### Default User Disabled
 ![Default User Disabled](images/DefaultUserDisabled.png)
 
-### Admin User — Full Access
+### Admin User - Full Access
 ![Admin User Test + ACL List](images/AdminUserTestACLList.png)
 
-### app_user — Session Keys Only
+### app_user - Session Keys Only
 
 | Command | Result |
 |---------|--------|
 | `set session:user123 "data"` |  OK |
 | `set otherkey "oops"` |  NOPERM — key not allowed |
 
-![app_user RBAC Test](images/ppuserRBACTestPermissionDeniedonNon-SessionKeypng.png)
+![app_user RBAC Test](images/pp_userRBACTestPermissionDeniedonNon-SessionKeypng.png)
 
-### monitoring — Read Only
+### monitoring - Read Only
 
 | Command | Result |
 |---------|--------|
